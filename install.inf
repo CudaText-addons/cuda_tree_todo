@@ -1,0 +1,11 @@
+[info]
+title=TreeHelper for ToDo
+desc=TreeHelper for ToDo lexer
+type=cudatext-plugin
+subdir=cuda_tree_todo
+homepage=https://github.com/ildarkhasanshin/cuda_tree_todo
+
+[treehelper1]
+lexers=ToDo
+method=get_headers
+fold=0
