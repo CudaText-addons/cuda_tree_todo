@@ -9,9 +9,9 @@ def get_headers(filename, lines):
             level_ = len(line.split('\t'))
             res.append(((level_-1, i, level_-1, i), level_, line_))
         else:
+            line_ = line.lstrip()
             for s in SYMBOLS:
-                if s in line:
-                    line_ = s + line.split(s)[1]
+                if line_.startswith(s):
                     level_ = len(line.split('\t'))
                     res.append(((level_-1, i, level_-1, i), level_, line_))
 
