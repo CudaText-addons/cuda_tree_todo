@@ -8,10 +8,11 @@ def get_headers(filename, lines):
             line_ = line.split(TITLE_SEP)[0].strip()
             level_ = len(line.split('\t'))
             res.append(((level_-1, i, level_-1, i), level_, line_))
-        for s in SYMBOLS:
-            if s in line:
-                line_ = s + ' ' + line.split(s)[1]
-                level_ = len(line.split('\t'))
-                res.append(((level_-1, i, level_-1, i), level_, line_))
+        else:
+            for s in SYMBOLS:
+                if s in line:
+                    line_ = s + line.split(s)[1]
+                    level_ = len(line.split('\t'))
+                    res.append(((level_-1, i, level_-1, i), level_, line_))
 
     return res
