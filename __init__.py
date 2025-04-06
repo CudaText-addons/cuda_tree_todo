@@ -9,8 +9,7 @@ def get_indent(lines):
     MAX_READ_LINES = 20
     INDENT_SPACES = True
 
-    nlines = min(MAX_READ_LINES, sum(1 for line in lines))
-    lines = lines[:nlines]
+    lines = lines[:MAX_READ_LINES]
 
     starts_with_tab = 0
     spaces_list = []
