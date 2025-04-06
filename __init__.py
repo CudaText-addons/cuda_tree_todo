@@ -24,13 +24,13 @@ def get_headers(filename, lines):
         if line.endswith(TITLE_SEP):
             line_ = line.split(TITLE_SEP)[0].strip()
             level_ = len(line.split(indent_))
-            res.append(((level_-1, i, level_-1, i), level_, line_))
+            res.append(((level_-1, i, level_-1, i), level_, line_, 8))
         else:
             line_ = line.lstrip()
             for s in SYMBOLS:
                 if line_.startswith(s):
                     level_ = len(line.split(indent_))
-                    res.append(((level_-1, i, level_-1, i), level_, line_))
+                    res.append(((level_-1, i, level_-1, i), level_, line_, 8))
                     break
 
     return res
