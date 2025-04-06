@@ -3,53 +3,23 @@ from cudatext import *
 TITLE_SEP = ':'
 SYMBOLS = ['❍', '❑', '■', '□' , '☐', '▪' , '▫', '✓', '✔', '☑', '√', '✘']
 
-# cuda_detect_indent
-def get_indent(lines):
-    MIN_INDENTED_LINES = 5
-    MAX_READ_LINES = 20
-    indent_spaces_ = True
+def get_indent(filename, lines):
+    bool_indent_spaces = False
+    indent_spaces = ' '
+    indent_tabs = '\t'
+    for h in ed_handles():
+        e = Editor(h)
+        if (e.get_filename() == filename):
+            timer_proc(TIMER_START_ONE, 'module=cuda_detect_indent;cmd=do_detect;info=_;', 100)
+            bool_indent_spaces = e.get_prop(PROP_TAB_SPACES, '')
+            ts_ = e.get_prop(PROP_TAB_SIZE, '')
 
-    lines = lines[:MAX_READ_LINES]
+            return ts_ * indent_spaces if bool_indent_spaces else indent_tabs
 
-    starts_with_tab = 0
-    spaces_list = []
-    indented_lines = 0
-
-    for line in lines:
-        if not line: continue
-        if line[0] == "\t":
-            starts_with_tab += 1
-            indented_lines += 1
-        elif line.startswith(' '):
-            spaces = 0
-            for ch in line:
-                if ch == ' ': spaces += 1
-                else: break
-            if spaces > 1 and spaces != len(line):
-                indented_lines += 1
-                spaces_list.append(spaces)
-
-    evidence = [1.0, 1.0, 0.8, 0.9, 0.8, 0.9, 0.9, 0.95, 1.0]
-
-    if indented_lines >= MIN_INDENTED_LINES:
-        if len(spaces_list) > starts_with_tab:
-            for indent in range(8, 1, -1):
-                same_indent = list(filter(lambda x: x % indent == 0, spaces_list))
-                if len(same_indent) >= evidence[indent] * len(spaces_list):
-                    indent_spaces_ = True
-
-            for indent in range(8, 1, -2):
-                same_indent = list(filter(lambda x: x % indent == 0 or x % indent == 1, spaces_list))
-                if len(same_indent) >= evidence[indent] * len(spaces_list):
-                    indent_spaces_ = True
-
-        elif starts_with_tab >= 0.8 * indented_lines:
-            indent_spaces_ = False
-
-    return ed.get_prop(PROP_TAB_SIZE) * ' ' if indent_spaces_ else '\t'
+    return indent_tabs
 
 def get_headers(filename, lines):
-    indent_ = get_indent(lines)
+    indent_ = get_indent(filename, lines)
     res = []
     for i, line in enumerate(lines):
         if line.endswith(TITLE_SEP):
