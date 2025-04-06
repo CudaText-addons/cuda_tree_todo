@@ -1,3 +1,6 @@
+2025.04.06
+[*] get_indent via plugin cuda_detect_indent
+
 2025.03.26
 [+] get_indent
 
