@@ -10,7 +10,6 @@ def get_indent(filename, lines):
     for h in ed_handles():
         e = Editor(h)
         if (e.get_filename() == filename):
-            timer_proc(TIMER_START_ONE, 'module=cuda_detect_indent;cmd=do_detect;info=_;', 100)
             bool_indent_spaces = e.get_prop(PROP_TAB_SPACES, '')
             ts_ = e.get_prop(PROP_TAB_SIZE, '')
 
