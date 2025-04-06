@@ -7,7 +7,7 @@ SYMBOLS = ['❍', '❑', '■', '□' , '☐', '▪' , '▫', '✓', '✔', '☑
 def get_indent(lines):
     MIN_INDENTED_LINES = 5
     MAX_READ_LINES = 20
-    INDENT_SPACES = True
+    indent_spaces_ = True
 
     lines = lines[:MAX_READ_LINES]
 
@@ -36,17 +36,17 @@ def get_indent(lines):
             for indent in range(8, 1, -1):
                 same_indent = list(filter(lambda x: x % indent == 0, spaces_list))
                 if len(same_indent) >= evidence[indent] * len(spaces_list):
-                    INDENT_SPACES = True
+                    indent_spaces_ = True
 
             for indent in range(8, 1, -2):
                 same_indent = list(filter(lambda x: x % indent == 0 or x % indent == 1, spaces_list))
                 if len(same_indent) >= evidence[indent] * len(spaces_list):
-                    INDENT_SPACES = True
+                    indent_spaces_ = True
 
         elif starts_with_tab >= 0.8 * indented_lines:
-            INDENT_SPACES = False
+            indent_spaces_ = False
 
-    return ed.get_prop(PROP_TAB_SIZE) * ' ' if INDENT_SPACES else '\t'
+    return ed.get_prop(PROP_TAB_SIZE) * ' ' if indent_spaces_ else '\t'
 
 def get_headers(filename, lines):
     indent_ = get_indent(lines)
