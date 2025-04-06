@@ -1,9 +1,16 @@
 from cudatext import *
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)
+
 TITLE_SEP = ':'
 SYMBOLS = ['❍', '❑', '■', '□' , '☐', '▪' , '▫', '✓', '✔', '☑', '√', '✘']
 
 def get_indent(filename, lines):
+    try:
+        import cuda_detect_indent
+    except ImportError:
+        msg_box(_('For the plugin to work properly, it is recommended to install the indentation detection plugin in Addons Manager: detect_indent'), MB_OK)
     bool_indent_spaces = False
     indent_spaces = ' '
     indent_tabs = '\t'
