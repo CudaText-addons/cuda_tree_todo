@@ -38,8 +38,6 @@ def get_headers(filename, lines):
                 if line_.startswith(s):
                     level_ = len(line.split(indent_))
                     res.append((((level_-1) * len(indent_), i, level_-1, i), level_, line_, -1))
-                    list__.append(' ' * (level_-1) * len(indent_) + line_)
-                    list__x_y.append([(level_-1) * len(indent_), i])
                     break
 
     return res
