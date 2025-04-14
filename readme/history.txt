@@ -1,6 +1,3 @@
-2025.04.08
-[+] command List
-
 2025.03.26
 [+] get_indent
 
