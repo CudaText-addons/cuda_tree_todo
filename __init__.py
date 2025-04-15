@@ -1,16 +1,28 @@
+import os
 from cudatext import *
 
 from cudax_lib import get_translation
 _ = get_translation(__file__)
 
-TITLE_SEP = ':'
-SYMBOLS = ['❍', '❑', '■', '□' , '☐', '▪' , '▫', '✓', '✔', '☑', '√', '✘']
+fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'plugins.ini')
+ini_section = os.path.basename(os.path.dirname(os.path.abspath(__file__))).replace('cuda_', '')
+opts_def = dict(
+    title_sep = ':',
+    spec_symbols = '❍,❑,■,□,☐,▪,▫,✓,✔,☑,√,✘,+',
+)
+
+def load_opts():
+    data = dict()
+    for key in opts_def:
+        data[key] = ini_read(fn_config, ini_section, key, opts_def[key])
+
+    return data
+
+def save_opts():
+    for key in opts:
+        ini_write(fn_config, ini_section, key, opts[key])
 
 def get_indent(filename, lines):
-    try:
-        import cuda_detect_indent
-    except ImportError:
-        msg_box(_('For the plugin to work properly, it is recommended to install the indentation detection plugin in Addons Manager: detect_indent'), MB_OK)
     bool_indent_spaces = False
     indent_spaces = ' '
     indent_tabs = '\t'
@@ -27,17 +39,30 @@ def get_indent(filename, lines):
 def get_headers(filename, lines):
     indent_ = get_indent(filename, lines)
     res = []
+    global opts
+    opts = load_opts()
     for i, line in enumerate(lines):
-        if line.endswith(TITLE_SEP):
-            line_ = line.split(TITLE_SEP)[0].strip()
+        if line.endswith(opts['title_sep']):
+            line_ = line.split(opts['title_sep'])[0].strip()
             level_ = len(line.split(indent_))
             res.append((((level_-1) * len(indent_), i, level_-1, i), level_, line_, -1))
         else:
             line_ = line.lstrip()
-            for s in SYMBOLS:
+            for s in opts['spec_symbols']:
                 if line_.startswith(s):
                     level_ = len(line.split(indent_))
                     res.append((((level_-1) * len(indent_), i, level_-1, i), level_, line_, -1))
                     break
 
     return res
+
+class Command:
+    def config(self):
+        save_opts()
+        file_open(fn_config)
+        lines = [ed.get_text_line(i) for i in range(ed.get_line_count())]
+        try:
+            index = lines.index('[' + ini_section + ']')
+            ed.set_caret(0, index)
+        except:
+            pass
