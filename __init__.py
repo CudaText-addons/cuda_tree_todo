@@ -19,6 +19,8 @@ def load_opts():
     return data
 
 def save_opts():
+    global opts
+    opts = load_opts()
     for key in opts:
         ini_write(fn_config, ini_section, key, opts[key])
 
