@@ -8,7 +8,7 @@ fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'plugins.ini')
 ini_section = os.path.basename(os.path.dirname(os.path.abspath(__file__))).replace('cuda_', '')
 opts_def = dict(
     title_sep = ':',
-    spec_symbols = '❍,❑,■,□,☐,▪,▫,✓,✔,☑,√,✘,+',
+    spec_symbols = '❍❑■□☐▪▫✓✔☑√✘+',
 )
 
 def load_opts():
@@ -18,9 +18,10 @@ def load_opts():
 
     return data
 
+opts = load_opts()
+
 def save_opts():
     global opts
-    opts = load_opts()
     for key in opts:
         ini_write(fn_config, ini_section, key, opts[key])
 
@@ -42,7 +43,6 @@ def get_headers(filename, lines):
     indent_ = get_indent(filename, lines)
     res = []
     global opts
-    opts = load_opts()
     for i, line in enumerate(lines):
         if line.endswith(opts['title_sep']):
             line_ = line.split(opts['title_sep'])[0].strip()
