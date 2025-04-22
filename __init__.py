@@ -1,9 +1,6 @@
 import os
 from cudatext import *
 
-from cudax_lib import get_translation
-_ = get_translation(__file__)
-
 fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'plugins.ini')
 ini_section = os.path.basename(os.path.dirname(os.path.abspath(__file__))).replace('cuda_', '')
 opts_def = dict(
